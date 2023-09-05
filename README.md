@@ -65,9 +65,8 @@ Inside the `server` folder, the project uses Express.js.
 ```plaintext
 server/
 ├── node_modules/
-├── routes/
 ├── models/
-├── app.js
+├── index.js
 ├── package.json
 └── .env               # Environment variables
 ```
