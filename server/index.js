@@ -30,11 +30,11 @@ const User = require("./models/User");
 
 // ===================== User Routes =====================
 
-app.post("", async (req, res) => {
+app.post("/user", async (req, res) => {
   // TODO: Implement user signup logic
 });
 
-app.post("", async (req, res) => {
+app.post("user", async (req, res) => {
   // TODO: Implement user login logic
 });
 
