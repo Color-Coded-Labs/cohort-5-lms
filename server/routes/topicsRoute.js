@@ -3,7 +3,7 @@
 import Topic from "../models/Topic";
 
 // Route for creating a new Topic
-app.post("", async (req, res) => {
+app.post("/topic/create", async (req, res) => {
   // TODO: Implement topic creation logic
   try {
     if (
@@ -12,12 +12,9 @@ app.post("", async (req, res) => {
       !req.body.chapters ||
       !req.body.resources
     ) {
-      return res
-        .status(400)
-        .json({
-          message:
-            "Please include a title, description, chapters, and resources",
-        });
+      return res.status(400).json({
+        message: "Please include a title, description, chapters, and resources",
+      });
     }
     const newTopic = {
       title: req.body.title,
@@ -27,7 +24,7 @@ app.post("", async (req, res) => {
     };
 
     const topic = await Topic.create(newTopic);
-    return res.status(200).send(topic)
+    return res.status(200).send(topic);
   } catch {
     (error) => {
       console.log(error);
