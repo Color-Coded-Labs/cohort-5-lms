@@ -1,7 +1,15 @@
 import express from "express";
 import { User } from "../models/User.js";
+import bcrypt from "bcrypt";
 
 const router = express.Router();
+const bcrypt = require("bcrypt");
+
+
+// Import the User model
+import User from "../models/User.js"
+// const User = require("./models/User");
+
 
 // ===================== User Routes =====================
 

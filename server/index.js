@@ -1,8 +1,10 @@
 // Load required modules
-const express = require("express");
-const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
-const dotenv = require("dotenv");
+import express from "express";
+import "dotenv/config";
+import mongoose from "mongoose";
+import Course from "./models/Course";
+
+import cors from "cors";
 
 // Load environment variables from .env file
 dotenv.config();
@@ -22,71 +24,11 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(() => console.log("MongoDB connected"))
-  .catch((err) => console.error(err));
-
-// Import the User model
-const User = require("./models/User");
-
-// ===================== User Routes =====================
-
-app.post("/user", async (req, res) => {
-  // TODO: Implement user signup logic
-});
-
-app.post("user", async (req, res) => {
-  // TODO: Implement user login logic
-});
-
-app.put("", async (req, res) => {
-  // TODO: Implement user update logic
-});
-
-app.delete("", async (req, res) => {
-  // TODO: Implement user deletion logic
-});
-
-// ===================== Module Routes =====================
-
-app.get("", async (req, res) => {
-  // TODO: Implement fetch all modules logic
-});
-
-app.post("", async (req, res) => {
-  // TODO: Implement module creation logic
-});
-
-app.get("", async (req, res) => {
-  // TODO: Implement fetch specific module logic
-});
-
-app.put("", async (req, res) => {
-  // TODO: Implement module update logic
-});
-
-app.delete("", async (req, res) => {
-  // TODO: Implement module deletion logic
-});
-
-// ===================== Topic Routes =====================
-
-app.post("", async (req, res) => {
-  // TODO: Implement topic creation logic
-});
-
-app.get("", async (req, res) => {
-  // TODO: Implement fetch specific topic logic
-});
-
-app.put("", async (req, res) => {
-  // TODO: Implement topic update logic
-});
-
-app.delete("", async (req, res) => {
-  // TODO: Implement topic deletion logic
-});
-
-// Start the Express server
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+  .then(() => {
+    console.log("MongoDB connected");
+    app
+      .listen(PORT, () => {
+        console.log(`App is listening to port: ${PORT}`);
+      })
+      .catch((err) => console.error(err));
+  });
