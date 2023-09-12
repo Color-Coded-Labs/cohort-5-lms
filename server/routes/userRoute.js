@@ -5,15 +5,13 @@ import bcrypt from "bcrypt";
 const router = express.Router();
 const bcrypt = require("bcrypt");
 
-
 // Import the User model
-import User from "../models/User.js"
+import User from "../models/User.js";
 // const User = require("./models/User");
-
 
 // ===================== User Routes =====================
 
-app.post("/register", async (req, res) => {
+router.post("/register", async (req, res) => {
   // TODO: Implement user signup logic
   try {
     const { username, password } = req.body;
@@ -42,7 +40,7 @@ app.post("/register", async (req, res) => {
   }
 });
 
-app.post("/login", async (req, res) => {
+router.post("/login", async (req, res) => {
   // TODO: Implement user login logic
 
   try {
@@ -66,11 +64,31 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.put("", async (req, res) => {
+router.put("", async (req, res) => {
   // TODO: Implement user update logic
+  try {
+    if (!req.body.username || !req.body.password) {
+      return res.status(400).send({
+        message: "Send all required fields: username, password",
+      });
+    }
+
+    const { userId } = req.params;
+
+    const result = await User.findByIdAndUpdate(userId, req.body);
+
+    if (!result) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    return res.status(200).send({ message: "User updated successfully" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: error.message });
+  }
 });
 
-app.delete("/user/:userId", async (req, res) => {
+router.delete("/user/:userId", async (req, res) => {
   // TODO: Implement user deletion logic
   try {
     const { userId } = req.params.userId;
@@ -87,3 +105,5 @@ app.delete("/user/:userId", async (req, res) => {
     res.status(500).send({ message: error.message });
   }
 });
+
+export default router;

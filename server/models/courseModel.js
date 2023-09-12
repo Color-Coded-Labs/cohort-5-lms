@@ -1,7 +1,8 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
+import topicSchema from "./topicModel";
 const { Schema } = mongoose;
 
-const courseSchema = new Schema({
+const courseSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
@@ -11,6 +12,7 @@ const courseSchema = new Schema({
     type: String,
     required: true,
   },
+  topics: [topicSchema],
 });
 
 const Course = mongoose.model("Course", courseSchema);

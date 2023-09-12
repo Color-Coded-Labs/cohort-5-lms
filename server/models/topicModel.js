@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
 
-const topicSchema = new Schema({
+const topicSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
@@ -11,17 +11,16 @@ const topicSchema = new Schema({
     type: String,
     required: true,
   },
-  chapters: {
+  content: {
     type: String,
     required: true,
   },
-  resources: [
-    {
-      links: String,
-      required: true,
-    },
-  ],
+  resources: {
+    links: [],
+    required: false,
+  },
 });
 
-const Topic = mongoose.model("Topic", topicSchema);
-export default Topic;
+// const Topic = mongoose.model("Topic", topicSchema);
+// export default Topic;
+export default topicSchema;
