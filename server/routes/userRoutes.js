@@ -3,7 +3,6 @@ import { User } from "../models/User.js";
 import bcrypt from "bcrypt";
 
 const router = express.Router();
-const bcrypt = require("bcrypt");
 
 // Import the User model
 import User from "../models/User.js";
@@ -12,7 +11,6 @@ import User from "../models/User.js";
 // ===================== User Routes =====================
 
 router.post("/register", async (req, res) => {
-  // TODO: Implement user signup logic
   try {
     const { username, password } = req.body;
 
@@ -64,8 +62,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.put("", async (req, res) => {
-  // TODO: Implement user update logic
+router.put("/:userId", async (req, res) => {
   try {
     if (!req.body.username || !req.body.password) {
       return res.status(400).send({
@@ -81,17 +78,16 @@ router.put("", async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    return res.status(200).send({ message: "User updated successfully" });
+    return res.status(200).json({ message: "User updated successfully" });
   } catch (error) {
     console.log(error);
-    res.status(500).send({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 });
 
 router.delete("/user/:userId", async (req, res) => {
-  // TODO: Implement user deletion logic
   try {
-    const { userId } = req.params.userId;
+    const { userId } = req.params;
 
     const result = await User.findByIdAndDelete(userId);
 
@@ -99,10 +95,10 @@ router.delete("/user/:userId", async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    return res.status(200).json({ messge: "User successfully deleted" });
+    return res.status(200).json({ message: "User successfully deleted" });
   } catch (error) {
     console.log(error.message);
-    res.status(500).send({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 });
 

@@ -5,7 +5,8 @@ const router = express.Router();
 
 // ===================== Course Routes =====================
 
-router.post("/", async (req, res) => {
+// Route to CREATE a Course
+router.post("/create", async (req, res) => {
   // TODO: Implement fetch all modules logic
   try {
     if (!req.body.title || !req.body.description) {
@@ -60,8 +61,29 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.put("/create", async (req, res) => {
+// Route to UPDATE a Course
+router.put("/update", async (req, res) => {
   // TODO: Implement module update logic
+  try {
+    if (!req.body.title || !req.body.description || !req.body.topics) {
+      return res.status(400).send({
+        message: "Please include a title, description, and topics",
+      });
+    }
+
+    const { courseId } = req.params;
+
+    const result = await Course.findByIdAndUpdate(courseId, req.body);
+
+    if (!result) {
+      return res.status(404).json({ message: "Course not found" });
+    }
+
+    return res.status(200).send({ message: "Course updated successfully" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: error.message });
+  }
 });
 
 // Route to DELETE a Course

@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-const { Schema } = mongoose;
 
 const topicSchema = new mongoose.Schema({
   title: {
@@ -21,6 +20,4 @@ const topicSchema = new mongoose.Schema({
   },
 });
 
-// const Topic = mongoose.model("Topic", topicSchema);
-// export default Topic;
 export default topicSchema;
