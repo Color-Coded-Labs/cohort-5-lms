@@ -1,10 +1,10 @@
 // Load required modules
 import express from "express";
-import "dotenv/config";
+import dotenv from "dotenv";
 import mongoose from "mongoose";
-import userRoute from "./routes/userRoutes";
-import topicRoute from "./routes/topicRoutes";
-import courseRoute from "./routes/courseRoutes";
+import userRoute from "./routes/userRoutes.js";
+import topicRoute from "./routes/topicRoutes.js";
+import courseRoute from "./routes/courseRoutes.js";
 import cors from "cors";
 
 // Load environment variables from .env file
@@ -27,9 +27,9 @@ app.get("/", (req, res) => {
   return res.status(200).send("Welcome to CCL!");
 });
 
-app.use("/users", userRoutes);
-app.use("/courses", courseRoutes);
-app.use("/topics", topicRoutes);
+app.use("/users", userRoute);
+app.use("/courses", courseRoute);
+app.use("/topics", topicRoute);
 
 // Connect to MongoDB Atlas Database
 mongoose
@@ -40,9 +40,8 @@ mongoose
   .then(() => {
     console.log("MongoDB connected");
     // Start the Express server
-    app
-      .listen(PORT, () => {
-        console.log(`App is listening to port: ${PORT}`);
-      })
-      .catch((err) => console.error(err));
+    app.listen(PORT, () => {
+      console.log(`App is listening to port: ${PORT}`);
+    });
+    // .catch((err) => console.error(err));
   });

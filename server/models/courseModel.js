@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import topicSchema from "./topicModel";
+import topicSchema from "./topicModel.js";
 
 const courseSchema = new mongoose.Schema({
   title: {

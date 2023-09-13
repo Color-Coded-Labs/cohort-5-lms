@@ -16,7 +16,6 @@ const topicSchema = new mongoose.Schema({
   },
   resources: {
     links: [],
-    required: false,
   },
 });
 
