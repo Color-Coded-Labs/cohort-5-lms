@@ -12,14 +12,14 @@ router.post("/create", async (req, res) => {
     const { courseName, title, content } = req.body;
     const course = await Course.findOne({ name: courseName });
     if (!course) {
-      return res.status(404).json({
+      res.status(404).json({
         message: "Course not found",
       });
     }
     const topic = { title, content };
     course.topics.push(topic);
     await course.save();
-    return res.status(200).send("Topic added successfully");
+    res.status(200).send("Topic added successfully");
   } catch (error) {
     console.log(error.message);
     res.status(500).send({ message: error.message });
@@ -41,7 +41,7 @@ router.get("/", async (req, res) => {
 
       allTopics.push(...topics);
     }
-    return res.status(200).json(allTopics);
+    res.status(200).json(allTopics);
   } catch (error) {
     console.log(error.message);
     res.status(500).send({ message: error.message });
@@ -56,7 +56,7 @@ router.get("", async (req, res) => {
     for (let cor of courses) {
       const topic = cor.topics.id(req.params.topicId);
       if (topic) {
-        return res.status(200).json(topic);
+        res.status(200).json(topic);
       }
     }
   } catch (error) {
@@ -74,13 +74,13 @@ router.put("/:topicId", async (req, res) => {
     const course = await Course.findById(courseId);
 
     if (!course) {
-      return res.status(404).json({ message: "Course not found" });
+      res.status(404).json({ message: "Course not found" });
     }
 
     const topic = course.topics.id(topicId);
 
     if (!topic) {
-      return res.status(404).json({ message: "Topic not found" });
+      res.status(404).json({ message: "Topic not found" });
     }
 
     topic.title = req.body.title;
@@ -88,7 +88,7 @@ router.put("/:topicId", async (req, res) => {
 
     await course.save();
 
-    return res.status(200).send({ message: "Topic updated successfully" });
+    res.status(200).send({ message: "Topic updated successfully" });
   } catch (error) {
     console.log(error);
     res.status(500).send({ message: error.message });
@@ -104,20 +104,20 @@ router.delete("/:topicId", async (req, res) => {
     const course = await Course.findById(courseId);
 
     if (!course) {
-      return res.status(404).json({ message: "Course not found" });
+      res.status(404).json({ message: "Course not found" });
     }
 
     const topic = course.topics.id(topicId);
 
     if (!topic) {
-      return res.status(404).json({ message: "Topic not found" });
+      res.status(404).json({ message: "Topic not found" });
     }
 
     topic.remove();
 
     await course.save();
 
-    return res.status(204).json({ message: "Topic successfully deleted" });
+    res.status(204).json({ message: "Topic successfully deleted" });
   } catch (error) {
     console.log(error.message);
     res.status(500).send({ message: error.message });

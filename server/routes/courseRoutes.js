@@ -10,7 +10,7 @@ router.post("/create", async (req, res) => {
   // TODO: Implement fetch all modules logic
   try {
     if (!req.body.title || !req.body.description) {
-      return res.status(400).json({
+      res.status(400).json({
         message: "Please include a title and description",
       });
     }
@@ -20,7 +20,7 @@ router.post("/create", async (req, res) => {
     };
 
     const course = await Course.create(newCourse);
-    return res.status(200).send(course);
+    res.status(200).send(course);
   } catch (error) {
     (error) => {
       console.log(error.message);
@@ -37,7 +37,7 @@ router.get("/:courseID", async (req, res) => {
 
     const course = await Course.findById(courseId);
 
-    return res.status(200).json(course);
+    res.status(200).json(course);
   } catch (error) {
     console.log(error.message);
     res.status(500).send({ message: error.message });
@@ -51,10 +51,7 @@ router.get("/", async (req, res) => {
   try {
     const course = await Course.find({});
 
-    return res.status(200).json({
-      count: course.length,
-      data: course,
-    });
+    res.status(200).json(course);
   } catch (error) {
     console.log(error.message);
     res.status(500).send({ message: error.message });
@@ -66,7 +63,7 @@ router.put("/update", async (req, res) => {
   // TODO: Implement module update logic
   try {
     if (!req.body.title || !req.body.description || !req.body.topics) {
-      return res.status(400).send({
+      res.status(400).send({
         message: "Please include a title, description, and topics",
       });
     }
@@ -76,10 +73,10 @@ router.put("/update", async (req, res) => {
     const result = await Course.findByIdAndUpdate(courseId, req.body);
 
     if (!result) {
-      return res.status(404).json({ message: "Course not found" });
+      res.status(404).json({ message: "Course not found" });
     }
 
-    return res.status(200).send({ message: "Course updated successfully" });
+    res.status(200).send({ message: "Course updated successfully" });
   } catch (error) {
     console.log(error);
     res.status(500).send({ message: error.message });
@@ -95,10 +92,10 @@ router.delete("/:courseId", async (req, res) => {
     const result = await User.findByIdAndDelete(courseId);
 
     if (!result) {
-      return res.status(404).json({ message: "Course not found" });
+      res.status(404).json({ message: "Course not found" });
     }
 
-    return res.status(200).json({ messge: "Course successfully deleted" });
+    res.status(200).json({ messge: "Course successfully deleted" });
   } catch (error) {
     console.log(error.message);
     res.status(500).send({ message: error.message });

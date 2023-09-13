@@ -17,7 +17,7 @@ router.post("/register", async (req, res) => {
     // Check if username already exists
     const existingUser = await User.findOne({ username });
     if (existingUser) {
-      return res.status(400).json({ message: "Username already exists" });
+      res.status(400).json({ message: "Username already exists" });
     }
 
     // Hash the password
@@ -47,13 +47,13 @@ router.post("/login", async (req, res) => {
     // Check if user exists
     const user = await User.findOne({ username });
     if (!user) {
-      return res.status(400).json({ message: "Invalid username or password" });
+      res.status(400).json({ message: "Invalid username or password" });
     }
 
     // Compare password
     const validPassword = await bcrypt.compare(password, user.password);
     if (!validPassword) {
-      return res.status(400).json({ message: "Invalid username or password" });
+      res.status(400).json({ message: "Invalid username or password" });
     }
 
     res.status(200).json({ message: "Logged in successfully" });
@@ -65,7 +65,7 @@ router.post("/login", async (req, res) => {
 router.put("/:userId", async (req, res) => {
   try {
     if (!req.body.username || !req.body.password) {
-      return res.status(400).send({
+      res.status(400).send({
         message: "Send all required fields: username, password",
       });
     }
@@ -75,10 +75,10 @@ router.put("/:userId", async (req, res) => {
     const result = await User.findByIdAndUpdate(userId, req.body);
 
     if (!result) {
-      return res.status(404).json({ message: "User not found" });
+      res.status(404).json({ message: "User not found" });
     }
 
-    return res.status(200).json({ message: "User updated successfully" });
+    res.status(200).json({ message: "User updated successfully" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: error.message });
@@ -92,10 +92,10 @@ router.delete("/user/:userId", async (req, res) => {
     const result = await User.findByIdAndDelete(userId);
 
     if (!result) {
-      return res.status(404).json({ message: "User not found" });
+      res.status(404).json({ message: "User not found" });
     }
 
-    return res.status(200).json({ message: "User successfully deleted" });
+    res.status(200).json({ message: "User successfully deleted" });
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ message: error.message });
