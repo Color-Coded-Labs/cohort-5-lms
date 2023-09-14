@@ -14,9 +14,7 @@ const topicSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  resources: {
-    links: [],
-  },
+  resources: [],
 });
 
 export default topicSchema;

@@ -30,7 +30,7 @@ router.post("/create", async (req, res) => {
 });
 
 // Route to GET one Course from database
-router.get("/:courseID", async (req, res) => {
+router.get("/:courseId", async (req, res) => {
   // TODO: Implement fetch specific topic logic
   try {
     const { courseId } = req.params;
@@ -59,7 +59,7 @@ router.get("/", async (req, res) => {
 });
 
 // Route to UPDATE a Course
-router.put("/update", async (req, res) => {
+router.put("/:courseId", async (req, res) => {
   // TODO: Implement module update logic
   try {
     if (!req.body.title || !req.body.description || !req.body.topics) {
@@ -87,9 +87,9 @@ router.put("/update", async (req, res) => {
 router.delete("/:courseId", async (req, res) => {
   // TODO: Implement user deletion logic
   try {
-    const { courseId } = req.params.courseId;
+    const { courseId } = req.params;
 
-    const result = await User.findByIdAndDelete(courseId);
+    const result = await Course.findByIdAndDelete(courseId);
 
     if (!result) {
       res.status(404).json({ message: "Course not found" });

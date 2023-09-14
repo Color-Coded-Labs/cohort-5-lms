@@ -49,7 +49,7 @@ router.get("/", async (req, res) => {
 });
 
 // Route to GET one Topic from database
-router.get("", async (req, res) => {
+router.get("/:topicId", async (req, res) => {
   // TODO: Implement fetch specific topic logic
   try {
     const courses = await Course.find();
@@ -66,7 +66,7 @@ router.get("", async (req, res) => {
 });
 
 // Route to UPDATE a Topic
-router.put("/:topicId", async (req, res) => {
+router.put("/:courseId/:topicId", async (req, res) => {
   try {
     const courseId = req.params.courseId;
     const topicId = req.params.topicId;
@@ -74,53 +74,51 @@ router.put("/:topicId", async (req, res) => {
     const course = await Course.findById(courseId);
 
     if (!course) {
-      res.status(404).json({ message: "Course not found" });
+      return res.status(404).json({ message: "Course not found" });
     }
 
     const topic = course.topics.id(topicId);
 
     if (!topic) {
-      res.status(404).json({ message: "Topic not found" });
+      return res.status(404).json({ message: "Topic not found" });
     }
 
+    // Update the topic properties
     topic.title = req.body.title;
     topic.description = req.body.description;
 
     await course.save();
 
-    res.status(200).send({ message: "Topic updated successfully" });
+    res.status(200).json({ message: "Topic updated successfully" });
   } catch (error) {
-    console.log(error);
-    res.status(500).send({ message: error.message });
+    console.error(error);
+    res.status(500).json({ message: error.message });
   }
 });
 
 // Route to DELETE a Topic
-router.delete("/:topicId", async (req, res) => {
+router.delete("/:courseId/:topicId", async (req, res) => {
   try {
     const courseId = req.params.courseId;
     const topicId = req.params.topicId;
 
+    // Fetch the course based on the courseId
     const course = await Course.findById(courseId);
 
     if (!course) {
-      res.status(404).json({ message: "Course not found" });
+      return res.status(404).json({ message: "Course not found" });
     }
 
-    const topic = course.topics.id(topicId);
+    // Find and remove the topic within the course's topics array
+    course.topics.pull({ _id: topicId }); // Use the `pull` method
 
-    if (!topic) {
-      res.status(404).json({ message: "Topic not found" });
-    }
-
-    topic.remove();
-
+    // Save the course to persist the changes
     await course.save();
 
-    res.status(204).json({ message: "Topic successfully deleted" });
+    res.status(200).json({ message: "Topic successfully deleted" });
   } catch (error) {
-    console.log(error.message);
-    res.status(500).send({ message: error.message });
+    console.error(error.message);
+    res.status(500).json({ message: error.message });
   }
 });
 

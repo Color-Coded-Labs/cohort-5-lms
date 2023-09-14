@@ -43,5 +43,5 @@ mongoose
     app.listen(PORT, () => {
       console.log(`App is listening to port: ${PORT}`);
     });
-    // .catch((err) => console.error(err));
-  });
+  })
+  .catch((err) => console.error(err));

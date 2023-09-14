@@ -10,6 +10,7 @@ import User from "../models/userModel.js";
 
 // ===================== User Routes =====================
 
+// Route to CREATE a User
 router.post("/register", async (req, res) => {
   try {
     const { username, password } = req.body;
@@ -38,6 +39,7 @@ router.post("/register", async (req, res) => {
   }
 });
 
+// Route for User to Login
 router.post("/login", async (req, res) => {
   // TODO: Implement user login logic
 
@@ -55,27 +57,40 @@ router.post("/login", async (req, res) => {
     if (!validPassword) {
       res.status(400).json({ message: "Invalid username or password" });
     }
-
-    res.status(200).json({ message: "Logged in successfully" });
+    res
+      .status(200)
+      .json({ message: "Logged in successfully", userId: user._id });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
+// Route to UPDATE a User
 router.put("/:userId", async (req, res) => {
   try {
-    if (!req.body.username || !req.body.password) {
-      res.status(400).send({
-        message: "Send all required fields: username, password",
-      });
+    const { userId } = req.params;
+    const { username, password } = req.body;
+
+    // Check if username and password are provided
+    if (!username || !password) {
+      return res
+        .status(400)
+        .json({ message: "Send both username and password" });
     }
 
-    const { userId } = req.params;
+    // Hash the new password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
-    const result = await User.findByIdAndUpdate(userId, req.body);
+    // Update the user with the hashed password
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { username, password: hashedPassword },
+      { new: true }
+    );
 
-    if (!result) {
-      res.status(404).json({ message: "User not found" });
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
     }
 
     res.status(200).json({ message: "User updated successfully" });
@@ -85,7 +100,8 @@ router.put("/:userId", async (req, res) => {
   }
 });
 
-router.delete("/user/:userId", async (req, res) => {
+// Route to DELETE a User
+router.delete("/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
 
@@ -99,6 +115,21 @@ router.delete("/user/:userId", async (req, res) => {
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ message: error.message });
+  }
+});
+
+// Route to GET all Users
+router.get("/", async (req, res) => {
+  try {
+    const users = await User.find();
+
+    if (users.length === 0) {
+      return res.status(404).json({ message: "No users found" });
+    }
+
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 });
 
