@@ -7,6 +7,9 @@ import topicRoute from "./routes/topicRoutes.js";
 import courseRoute from "./routes/courseRoutes.js";
 import cors from "cors";
 
+import swaggerUi from "swagger-ui-express";
+import swaggerSpec from "./swaggerConfig.js"; // Replace with the actual path to your Swagger config file
+
 // Load environment variables from .env file
 dotenv.config();
 
@@ -21,6 +24,9 @@ app.use(express.json());
 
 // Middleware for handling CORS policy
 app.use(cors());
+
+// Serve Swagger documentation at /api-docs
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.get("/", (req, res) => {
   console.log(req);

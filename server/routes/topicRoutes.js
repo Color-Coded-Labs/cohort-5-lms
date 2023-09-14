@@ -5,6 +5,44 @@ const router = express.Router();
 
 // ===================== Topic Routes =====================
 
+/**
+ * @swagger
+ * tags:
+ *   name: Topics
+ *   description: Topic management
+ */
+
+/**
+ * @swagger
+ * /topics/create:
+ *   post:
+ *     summary: Create a new topic
+ *     tags: [Topics]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               courseName:
+ *                 type: string
+ *                 description: The name of the course to associate with the topic.
+ *               title:
+ *                 type: string
+ *                 description: The title of the topic.
+ *               content:
+ *                 type: string
+ *                 description: The content of the topic.
+ *     responses:
+ *       200:
+ *         description: Topic added successfully
+ *       404:
+ *         description: Course not found
+ *       500:
+ *         description: Internal server error
+ */
+
 // Route for creating a new Topic
 router.post("/create", async (req, res) => {
   // TODO: Implement topic creation logic
@@ -25,6 +63,32 @@ router.post("/create", async (req, res) => {
     res.status(500).send({ message: error.message });
   }
 });
+
+/**
+ * @swagger
+ * /topics:
+ *   get:
+ *     summary: Get all topics
+ *     tags: [Topics]
+ *     responses:
+ *       200:
+ *         description: A list of topics
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   topicId:
+ *                     type: string
+ *                     description: The ID of the topic.
+ *                   title:
+ *                     type: string
+ *                     description: The title of the topic.
+ *       500:
+ *         description: Internal server error
+ */
 
 // Route to GET all Topics from database
 router.get("/", async (req, res) => {
@@ -48,6 +112,37 @@ router.get("/", async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /topics/{topicId}:
+ *   get:
+ *     summary: Get a specific topic by ID
+ *     tags: [Topics]
+ *     parameters:
+ *       - in: path
+ *         name: topicId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the topic to retrieve.
+ *     responses:
+ *       200:
+ *         description: The topic with the specified ID
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 topicId:
+ *                   type: string
+ *                   description: The ID of the topic.
+ *                 title:
+ *                   type: string
+ *                   description: The title of the topic.
+ *       500:
+ *         description: Internal server error
+ */
+
 // Route to GET one Topic from database
 router.get("/:topicId", async (req, res) => {
   // TODO: Implement fetch specific topic logic
@@ -64,6 +159,47 @@ router.get("/:topicId", async (req, res) => {
     res.status(500).send({ message: error.message });
   }
 });
+
+/**
+ * @swagger
+ * /topics/{courseId}/{topicId}:
+ *   put:
+ *     summary: Update a topic by ID within a course
+ *     tags: [Topics]
+ *     parameters:
+ *       - in: path
+ *         name: courseId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the course containing the topic.
+ *       - in: path
+ *         name: topicId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the topic to update.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *                 description: The new title for the topic.
+ *               description:
+ *                 type: string
+ *                 description: The new description for the topic.
+ *     responses:
+ *       200:
+ *         description: Topic updated successfully
+ *       404:
+ *         description: Course or topic not found
+ *       500:
+ *         description: Internal server error
+ */
 
 // Route to UPDATE a Topic
 router.put("/:courseId/:topicId", async (req, res) => {
@@ -96,6 +232,33 @@ router.put("/:courseId/:topicId", async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /topics/{courseId}/{topicId}:
+ *   delete:
+ *     summary: Delete a topic by ID within a course
+ *     tags: [Topics]
+ *     parameters:
+ *       - in: path
+ *         name: courseId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the course containing the topic.
+ *       - in: path
+ *         name: topicId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the topic to delete.
+ *     responses:
+ *       200:
+ *         description: Topic successfully deleted
+ *       404:
+ *         description: Course or topic not found
+ *       500:
+ *         description: Internal server error
+ */
 // Route to DELETE a Topic
 router.delete("/:courseId/:topicId", async (req, res) => {
   try {
