@@ -1,5 +1,16 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
+
+useEffect(() => {
+  const endpoint = "http://localhost:3000/courses";
+  axios.get(endpoint)
+    .then((response) => {
+      setModules(response.data);
+    }).catch((error) => {
+      console.error("Error fetching courses", error);
+    });
+}, []);
 
 function Dashboard() {
   const [modules, setModules] = useState([
