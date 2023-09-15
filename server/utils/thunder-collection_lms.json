@@ -1,0 +1,226 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "lms",
+    "dateExported": "2023-09-15T00:26:50.766Z",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "32c19fb9-721b-4db6-9178-70c04b9b78b4",
+            "colId": "63967186-9895-401e-a0d5-79b509205793",
+            "containerId": "",
+            "name": "register user",
+            "url": "localhost:8000/users/register",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2023-09-13T22:45:13.642Z",
+            "modified": "2023-09-14T03:03:22.177Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"username\": \"user\",\n  \"password\": \"pw123\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "e5335372-48ef-44e3-adfd-23d9bc128ccc",
+            "colId": "63967186-9895-401e-a0d5-79b509205793",
+            "containerId": "",
+            "name": "login",
+            "url": "localhost:8000/users/login",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2023-09-13T22:46:55.279Z",
+            "modified": "2023-09-14T15:40:26.144Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"username\": \"user\",\n  \"password\": \"pw123\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "f1219a40-9339-462f-b174-d74f496a8e2c",
+            "colId": "63967186-9895-401e-a0d5-79b509205793",
+            "containerId": "",
+            "name": "get all users",
+            "url": "localhost:8000/users/",
+            "method": "GET",
+            "sortNum": 22500,
+            "created": "2023-09-14T03:16:11.181Z",
+            "modified": "2023-09-14T03:16:11.181Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"username\": \"testuser\",\n  \"password\": \"pw123\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "ea3c3d0e-623d-4438-bb5b-54e8f4e08ad2",
+            "colId": "63967186-9895-401e-a0d5-79b509205793",
+            "containerId": "",
+            "name": "update user info",
+            "url": "localhost:8000/users/65035b055c86bb70e2d85f76",
+            "method": "PUT",
+            "sortNum": 25000,
+            "created": "2023-09-14T03:15:46.433Z",
+            "modified": "2023-09-14T19:13:06.686Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"username\": \"testuser\",\n  \"password\": \"pw1234\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "6a6beda1-a5c0-4b15-9e99-75e6dbb29238",
+            "colId": "63967186-9895-401e-a0d5-79b509205793",
+            "containerId": "",
+            "name": "delete a user",
+            "url": "localhost:8000/users/65035b055c86bb70e2d85f76",
+            "method": "DELETE",
+            "sortNum": 27500,
+            "created": "2023-09-14T03:15:24.728Z",
+            "modified": "2023-09-14T19:13:25.757Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"username\": \"testuser\",\n  \"password\": \"pw123\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "f67a84b2-39ff-4d3e-9612-97efcc2e1ff1",
+            "colId": "63967186-9895-401e-a0d5-79b509205793",
+            "containerId": "",
+            "name": "get all courses",
+            "url": "localhost:8000/courses/",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2023-09-13T22:52:13.856Z",
+            "modified": "2023-09-14T15:37:19.064Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "c0849b03-b9d8-4978-8a7f-d2e9a417654f",
+            "colId": "63967186-9895-401e-a0d5-79b509205793",
+            "containerId": "",
+            "name": "get one course",
+            "url": "localhost:8000/courses/65035af79edbf08e9c23554e",
+            "method": "GET",
+            "sortNum": 50000,
+            "created": "2023-09-14T00:56:19.098Z",
+            "modified": "2023-09-14T19:13:56.566Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "c3b2a007-3bfe-4a3a-82c1-fda8ccea4bd1",
+            "colId": "63967186-9895-401e-a0d5-79b509205793",
+            "containerId": "",
+            "name": "update a course",
+            "url": "localhost:8000/courses/65035af79edbf08e9c23554e",
+            "method": "PUT",
+            "sortNum": 60000,
+            "created": "2023-09-14T01:02:55.304Z",
+            "modified": "2023-09-14T19:14:32.827Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": " {\n    \"title\": \"Web Basics\",\n    \"description\": \"Foundational web development concepts.\",\n    \"topics\": [\n      {\n        \"resources\": [\n          \"https://developer.mozilla.org/en-US/docs/Web/HTML\",\n          \"https://www.youtube.com/watch?v=UB1O30fR-EE\"\n        ],\n        \"title\": \"HTML\",\n        \"description\": \"HTML(hyper text markup language) is the language for creating web content and pages, using tags to define elements and layout.\",\n        \"content\": \"Introduction and basics of HTML.\",\n        \"_id\": \"6502590f87a9dd10877b6f89\"\n      },\n      {\n        \"resources\": [\n          \"https://developer.mozilla.org/en-US/docs/Web/CSS\",\n          \"https://www.youtube.com/watch?v=yfoY53QXEnI\"\n        ],\n        \"title\": \"CSS\",\n        \"description\": \"CSS (cascading style sheets) is the language used to style and format HTML elements on web pages, controlling their appearance, layout, and design.\",\n        \"content\": \"Styling web pages using CSS.\",\n        \"_id\": \"6502590f87a9dd10877b6f8a\"\n      },\n      {\n        \"resources\": [\n          \"https://www.smashingmagazine.com/2011/01/guidelines-for-responsive-web-design/\",\n          \"https://www.youtube.com/watch?v=bn-DQCifeQQ\"\n        ],\n        \"title\": \"Responsive Web Design\",\n        \"description\": \"Learn how to create web designs that adapt to different screen sizes and devices.\",\n        \"content\": \"Designing for multiple devices and resolutions.\",\n        \"_id\": \"6502590f87a9dd10877b6f8b\"\n      }\n    ]\n  }",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "475efb60-1194-4e27-bace-5f82656e2cd1",
+            "colId": "63967186-9895-401e-a0d5-79b509205793",
+            "containerId": "",
+            "name": "delete a course",
+            "url": "localhost:8000/courses/65035af79edbf08e9c23554e",
+            "method": "DELETE",
+            "sortNum": 70000,
+            "created": "2023-09-14T02:11:28.006Z",
+            "modified": "2023-09-14T19:14:52.026Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "719c0812-9b06-49ad-995e-902ba4d70437",
+            "colId": "63967186-9895-401e-a0d5-79b509205793",
+            "containerId": "",
+            "name": "get all topics",
+            "url": "localhost:8000/topics/",
+            "method": "GET",
+            "sortNum": 80000,
+            "created": "2023-09-14T03:17:55.763Z",
+            "modified": "2023-09-14T03:17:55.763Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "8996b14a-cf03-4b36-a3fa-dd4e6a071434",
+            "colId": "63967186-9895-401e-a0d5-79b509205793",
+            "containerId": "",
+            "name": "get one topic",
+            "url": "localhost:8000/topics/65035af79edbf08e9c235553",
+            "method": "GET",
+            "sortNum": 90000,
+            "created": "2023-09-14T03:19:53.658Z",
+            "modified": "2023-09-14T19:15:25.996Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "811ab47b-5715-44f4-9124-bea47a7a06d5",
+            "colId": "63967186-9895-401e-a0d5-79b509205793",
+            "containerId": "",
+            "name": "update a topic",
+            "url": "localhost:8000/topics/65035af79edbf08e9c235552/65035af79edbf08e9c235555",
+            "method": "PUT",
+            "sortNum": 100000,
+            "created": "2023-09-14T03:37:26.983Z",
+            "modified": "2023-09-14T19:59:48.830Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n \"title\": \"Loops and Arrays\",\n        \"description\": \"Explore JavaScript arrays and loops for efficient data manipulation and repetition of tasks.\",\n        \"content\": \"Working with arrays and various loop constructs.\",\n        \"resources\": [\n          \"https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Loops_and_iteration\",\n          \"https://www.youtube.com/watch?v=s9wW2PpJsmQ\"\n        ]\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "7cd4b34a-62cb-4ef6-9f50-79901be90cd5",
+            "colId": "63967186-9895-401e-a0d5-79b509205793",
+            "containerId": "",
+            "name": "Delete a topic",
+            "url": "localhost:8000/topics/65035af79edbf08e9c235552/65035af79edbf08e9c235553",
+            "method": "DELETE",
+            "sortNum": 110000,
+            "created": "2023-09-14T15:38:36.225Z",
+            "modified": "2023-09-14T20:02:19.240Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        }
+    ]
+}
