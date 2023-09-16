@@ -10,6 +10,41 @@ import User from "../models/userModel.js";
 
 // ===================== User Routes =====================
 
+/**
+ * @swagger
+ * tags:
+ *   name: Users
+ *   description: User management
+ */
+
+/**
+ * @swagger
+ * /users/register:
+ *   post:
+ *     summary: Register a new user
+ *     tags: [Users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 description: The username for the new user.
+ *               password:
+ *                 type: string
+ *                 description: The password for the new user.
+ *     responses:
+ *       200:
+ *         description: User registered successfully
+ *       400:
+ *         description: Username already exists
+ *       500:
+ *         description: Internal server error
+ */
+
 // Route to CREATE a User
 router.post("/register", async (req, res) => {
   try {
@@ -39,6 +74,44 @@ router.post("/register", async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /users/login:
+ *   post:
+ *     summary: Login as an existing user
+ *     tags: [Users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 description: The username of the user.
+ *               password:
+ *                 type: string
+ *                 description: The password of the user.
+ *     responses:
+ *       200:
+ *         description: Logged in successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: A success message.
+ *                 userId:
+ *                   type: string
+ *                   description: The user's ID.
+ *       400:
+ *         description: Invalid username or password
+ *       500:
+ *         description: Internal server error
+ */
 // Route for User to Login
 router.post("/login", async (req, res) => {
   // TODO: Implement user login logic
@@ -64,6 +137,43 @@ router.post("/login", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+/**
+ * @swagger
+ * /users/{userId}:
+ *   put:
+ *     summary: Update a user's information
+ *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the user to update.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 description: The new username for the user.
+ *               password:
+ *                 type: string
+ *                 description: The new password for the user.
+ *     responses:
+ *       200:
+ *         description: User updated successfully
+ *       400:
+ *         description: Send both username and password
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Internal server error
+ */
 
 // Route to UPDATE a User
 router.put("/:userId", async (req, res) => {
@@ -100,6 +210,28 @@ router.put("/:userId", async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /users/{userId}:
+ *   delete:
+ *     summary: Delete a user
+ *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the user to delete.
+ *     responses:
+ *       200:
+ *         description: User successfully deleted
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Internal server error
+ */
+
 // Route to DELETE a User
 router.delete("/:userId", async (req, res) => {
   try {
@@ -118,6 +250,26 @@ router.delete("/:userId", async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /users:
+ *   get:
+ *     summary: Get a list of all users
+ *     tags: [Users]
+ *     responses:
+ *       200:
+ *         description: A list of users
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/models/userModel.js'
+ *       404:
+ *         description: No users found
+ *       500:
+ *         description: Internal server error
+ */
 // Route to GET all Users
 router.get("/", async (req, res) => {
   try {
