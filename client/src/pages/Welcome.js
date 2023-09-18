@@ -15,6 +15,9 @@ function Welcome() {
         <li>
           <Link to="/dashboard">Go to Dashboard Page</Link>
         </li>
+        <li>
+          <Link to="/addcontent">Add Content</Link>
+        </li>
       </ul>
     </>
   );

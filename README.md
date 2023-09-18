@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-
 # Cohort-5-LMS
 
 A Learning Management System (LMS) built using the MERN stack. This project consists of a `client` folder that contains the React frontend and a `server` folder containing the Express backend.
@@ -109,5 +107,3 @@ PORT=8000
 ```
 
 Replace `your_mongodb_atlas_uri_here` with your actual MongoDB Atlas URI.
-
-> > > > > > > cb16d5d8c4ab77e0a81a53dba2ac1d319bf8ca6a
