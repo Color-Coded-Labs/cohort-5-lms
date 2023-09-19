@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "type": "module",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
+    "start": "node server.js",
+    "dev": "nodemon server.js",
     "md-docs": "swagger-markdown -i path/to/swagger.yaml"
   },
   "keywords": [],
