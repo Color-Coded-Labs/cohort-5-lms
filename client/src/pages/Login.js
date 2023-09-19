@@ -1,11 +1,16 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ReactMarkdown from "react-markdown";
 
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate()
+  const { topicId } = useParams();
+  const [topic, setTopic] = useState(null);
+  const [editMode, setEditMode] = useState(false);
+  const [updatedContent, setUpdatedContent] = useState("");
 
   function handleUsername(e) {
     setUsername(e.target.value);

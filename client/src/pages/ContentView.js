@@ -26,5 +26,5 @@ function ContentView() {
 export default ContentView;
 
 //to do; import axios /complete
-//to do; make an api call to retreive content from the database using the topic id
+//to do; make an api call to retrieve content from the database using the topic id
 //to do; display the content on the page

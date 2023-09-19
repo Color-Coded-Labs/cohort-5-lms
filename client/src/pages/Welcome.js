@@ -4,7 +4,12 @@ import { Link } from "react-router-dom";
 function Welcome() {
   return (
     <>
+      <div className="navbar bg-primary text-primary-content">
+        <a className="btn btn-ghost normal-case text-xl">daisyUI</a>
+
+      </div>
       <h1>Welcome to the LMS!</h1>
+      <button className="btn btn-outline btn-primary">whatever</button>
       <ul>
         <li>
           <Link to="/login">Go to Login Page</Link>
