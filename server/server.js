@@ -2,13 +2,10 @@
 import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
-import userRoute from "./routes/userRoutes.js";
-import topicRoute from "./routes/topicRoutes.js";
-import courseRoute from "./routes/courseRoutes.js";
 import cors from "cors";
-
 import swaggerUi from "swagger-ui-express";
-import swaggerSpec from "./swaggerConfig.js"; // Replace with the actual path to your Swagger config file
+import swaggerSpec from "./swaggerConfig.js";
+import apiV1Router from "./routes/v1.js";
 
 // Load environment variables from .env file
 dotenv.config();
@@ -33,9 +30,7 @@ app.get("/", (req, res) => {
   return res.status(200).send("Welcome to CCL!");
 });
 
-app.use("/users", userRoute);
-app.use("/courses", courseRoute);
-app.use("/topics", topicRoute);
+app.use("/api/v1", apiV1Router);
 
 // Connect to MongoDB Atlas Database
 mongoose
