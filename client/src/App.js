@@ -5,6 +5,7 @@ import LoginPage from "./pages/Login";
 import SignupPage from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
 import ContentView from "./pages/ContentView";
+import AddContent from "./pages/AddContent";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/dashboard/:topicId" element={<ContentView />} />
+          <Route path="" element={<AddContent />} />
         </Routes>
       </div>
     </Router>

@@ -2,14 +2,15 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
-
 function Dashboard() {
   useEffect(() => {
     const endpoint = "/courses";
-    axios.get(endpoint)
+    axios
+      .get(endpoint)
       .then((response) => {
         setModules(response.data);
-      }).catch((error) => {
+      })
+      .catch((error) => {
         console.error("Error fetching courses", error);
       });
   }, []);
@@ -81,6 +82,7 @@ function Dashboard() {
           </ul>
         </div>
       ))}
+      <button>Add Content Here</button>
     </div>
   );
 }
