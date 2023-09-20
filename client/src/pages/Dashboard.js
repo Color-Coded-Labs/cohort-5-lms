@@ -2,87 +2,111 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
-
 function Dashboard() {
+  const [modules, setModules] = useState([]);
+  const [newModuleName, setNewModuleName] = useState("");
+  const [newModuleDescription, setNewModuleDescription] = useState("");
+
   useEffect(() => {
     const endpoint = "/courses";
-    axios.get(endpoint)
+    axios
+      .get(endpoint)
       .then((response) => {
         setModules(response.data);
-      }).catch((error) => {
+      })
+      .catch((error) => {
         console.error("Error fetching courses", error);
       });
-  }, []);
+  }, [modules]);
 
-  const [modules, setModules] = useState([]);
-  // const [modules, setModules] = useState([
-  //   {
-  //     _id: "64ed16233b4b18cd5289ea5b",
-  //     name: "JavaScript Basics",
-  //     description: "Foundational concepts of JavaScript.",
-  //     topics: [
-  //       {
-  //         title: "Variables and Data Types",
-  //         content: "Understanding variables and data types in JS.",
-  //         links: [
-  //           "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Grammar_and_types",
-  //         ],
-  //         videos: ["https://www.youtube.com/watch?v=c-xiaCg6XeA"],
-  //         _id: "64ed16233b4b18cd5289ea5c",
-  //       },
-  //       {
-  //         title: "Functions",
-  //         content: "How to create and utilize functions.",
-  //         links: [
-  //           "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
-  //         ],
-  //         videos: ["https://www.youtube.com/watch?v=oB5rH_9bqAI"],
-  //         _id: "64ed16233b4b18cd5289ea5d",
-  //       },
-  //     ],
-  //     __v: 0,
-  //   },
-  //   {
-  //     _id: "64ed16233b4b18cd5289ea58",
-  //     name: "Web Basics",
-  //     description: "Foundational web development concepts.",
-  //     topics: [
-  //       {
-  //         title: "HTML",
-  //         content: "Introduction and basics of HTML.",
-  //         links: ["https://developer.mozilla.org/en-US/docs/Web/HTML"],
-  //         videos: ["https://www.youtube.com/watch?v=UB1O30fR-EE"],
-  //         _id: "64ed16233b4b18cd5289ea59",
-  //       },
-  //       {
-  //         title: "CSS",
-  //         content: "Styling web pages using CSS.",
-  //         links: ["https://developer.mozilla.org/en-US/docs/Web/CSS"],
-  //         videos: ["https://www.youtube.com/watch?v=yfoY53QXEnI"],
-  //         _id: "64ed16233b4b18cd5289ea5a",
-  //       },
-  //     ],
-  //     __v: 0,
-  //   },
-  // ]);
+  function handleAddModuleButton() { document.getElementById("add_module_modal").showModal(); }
+  async function handleAddModule() {
+    try {
+      let response = await axios.post("/courses/create", {
+        title: newModuleName,
+        description: newModuleDescription
+      })
+
+
+      if (response.data) {
+        setModules((prevModules) => [...prevModules, response.data]);
+        document.getElementById("add_module_modal").close();
+      }
+
+    } catch (error) {
+      console.error("Error adding module:", error);
+    }
+  }
 
   return (
-    <div className="dashboard">
-      {modules.map((module) => (
-        <div className="module" key={module._id}>
-          <h2>{module.name}</h2>
-          <p>{module.description}</p>
-          <ul>
-            {module.topics.map((topic) => (
-              <li key={topic._id}>
-                <Link to={`/dashboard/${topic._id}`}>{topic.title}</Link>
-              </li>
-            ))}
-          </ul>
+    <>
+      <button className="btn" onClick={handleAddModuleButton}>Add Module</button>
+      <div className="dashboard">
+        {modules.map((module) => (
+          <div key={module._id} className="card w-96 bg-base-100 shadow-xl">
+            <div className="card-body">
+              <h2 className="card-title">{module.title}</h2>
+              <p>{module.description}</p>
+              <button className="btn">Add Topic</button>
+              <button className="btn">Edit</button>
+              <button className="btn">Delete</button>
+
+              <ul className="menu bg-base-200 w-56 rounded-box">
+                <li>
+                  <h2 className="menu-title">Topics</h2>
+                  <ul>
+                    {module.topics.map((topic) => (
+                      <li key={topic._id}>
+                        <Link to={`/dashboard/${topic._id}`}>{topic.title}</Link>
+                        <button className="btn">Edit</button>
+                        <button className="btn">Delete</button>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Add Module Modal */}
+      <dialog id="add_module_modal" className="modal">
+        <div className="modal-box">
+          <h3 className="font-bold text-lg">Add New Module</h3>
+          <input
+            className="input input-bordered w-full mb-2"
+            type="text"
+            placeholder="Module Name"
+            value={newModuleName}
+            onChange={(e) => setNewModuleName(e.target.value)}
+          />
+          <input
+            className="input input-bordered w-full mb-2"
+            type="text"
+            placeholder="Module Description"
+            value={newModuleDescription}
+            onChange={(e) => setNewModuleDescription(e.target.value)}
+          />
+          <div className="modal-action">
+            <button className="btn" onClick={handleAddModule}>
+              Add
+            </button>
+            <button
+              className="btn btn-secondary"
+              onClick={() => {
+                document.getElementById("add_module_modal").close();
+
+              }}
+            >
+              Cancel
+            </button>
+          </div>
         </div>
-      ))}
-    </div>
+      </dialog>
+    </>
   );
 }
 
 export default Dashboard;
+
