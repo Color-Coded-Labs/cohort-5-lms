@@ -1,5 +1,13 @@
 # API Documentation
 
+Local IP
+
+- localhost:8000/api/v1.0
+
+Production Server
+
+- https://cohort-5-lms.onrender.com/api/v1/
+
 ## Users
 
 ### Register a User
