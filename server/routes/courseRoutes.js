@@ -57,10 +57,10 @@ router.post("/create", async (req, res) => {
     const course = await Course.create(newCourse);
     res.status(200).send(course);
   } catch (error) {
-    (error) => {
-      console.log(error.message);
-      res.status(500).send(message);
-    };
+
+    console.log(error.message);
+    res.status(500).send(error.message);
+
   }
 });
 

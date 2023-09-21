@@ -8,11 +8,11 @@ const topicSchema = new mongoose.Schema({
   },
   description: {
     type: String,
-    required: true,
+
   },
   content: {
     type: String,
-    required: true,
+
   },
   resources: [],
 });

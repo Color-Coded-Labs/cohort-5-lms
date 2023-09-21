@@ -6,6 +6,9 @@ function Dashboard() {
   const [modules, setModules] = useState([]);
   const [newModuleName, setNewModuleName] = useState("");
   const [newModuleDescription, setNewModuleDescription] = useState("");
+  const [newTopicName, setNewTopicName] = useState("");
+  const [courseName, setCourseName] = useState("");
+
 
   useEffect(() => {
     const endpoint = "/courses";
@@ -19,7 +22,30 @@ function Dashboard() {
       });
   }, [modules]);
 
-  function handleAddModuleButton() { document.getElementById("add_module_modal").showModal(); }
+  function handleAddTopicButton() {
+    document.getElementById("add_topic_modal").showModal();
+  }
+
+  async function handleAddTopic() {
+    try {
+      let response = await axios.post("/topics/create", {
+        courseName: courseName,
+        title: newTopicName,
+        content: "content"
+      })
+
+
+
+      document.getElementById("add_topic_modal").close();
+
+
+    } catch (error) {
+      console.error("Error adding topic:", error.message);
+    }
+  }
+  function handleAddModuleButton() {
+    document.getElementById("add_module_modal").showModal();
+  }
   async function handleAddModule() {
     try {
       let response = await axios.post("/courses/create", {
@@ -47,7 +73,11 @@ function Dashboard() {
             <div className="card-body">
               <h2 className="card-title">{module.title}</h2>
               <p>{module.description}</p>
-              <button className="btn">Add Topic</button>
+              <button className="btn" onClick={() => {
+                setCourseName(module.title)
+                handleAddTopicButton();
+
+              }}>Add Topic</button>
               <button className="btn">Edit</button>
               <button className="btn">Delete</button>
 
@@ -71,7 +101,7 @@ function Dashboard() {
       </div>
 
       {/* Add Module Modal */}
-      <dialog id="add_module_modal" className="modal">
+      <dialog id="edit_module_modal" className="modal">
         <div className="modal-box">
           <h3 className="font-bold text-lg">Add New Module</h3>
           <input
@@ -95,8 +125,36 @@ function Dashboard() {
             <button
               className="btn btn-secondary"
               onClick={() => {
-                document.getElementById("add_module_modal").close();
+                document.getElementById("edit_module_modal").close();
 
+              }}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </dialog>
+
+
+      {/* Add Topic Modal */}
+      <dialog id="edit_topic_modal" className="modal">
+        <div className="modal-box">
+          <h3 className="font-bold text-lg">Add New Topic</h3>
+          <input
+            className="input input-bordered w-full mb-2"
+            type="text"
+            placeholder="Topic Name"
+            value={newTopicName}
+            onChange={(e) => setNewTopicName(e.target.value)}
+          />
+          <div className="modal-action">
+            <button className="btn" onClick={handleAddTopic}>
+              Add
+            </button>
+            <button
+              className="btn btn-secondary"
+              onClick={() => {
+                document.getElementById("edit_topic_modal").close();
               }}
             >
               Cancel

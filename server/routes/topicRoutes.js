@@ -48,9 +48,9 @@ router.post("/create", async (req, res) => {
   // TODO: Implement topic creation logic
   try {
     const { courseName, title, content } = req.body;
-    const course = await Course.findOne({ name: courseName });
+    const course = await Course.findOne({ title: courseName });
     if (!course) {
-      res.status(404).json({
+      return res.status(404).json({
         message: "Course not found",
       });
     }
