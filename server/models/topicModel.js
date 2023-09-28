@@ -4,7 +4,6 @@ const topicSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
-    unique: false,
   },
 
   description: {

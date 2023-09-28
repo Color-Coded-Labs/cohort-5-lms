@@ -238,10 +238,7 @@ function Dashboard() {
         <div className="">
           {modules.length > 0 ? (
             modules.map((module) => (
-              <div
-                key={module._id}
-                className="card   bg-neutral text-neutral-contentbg-base-200 shadow-xl mb-6 "
-              >
+              <div key={module._id} className="card    shadow-xl mb-6 ">
                 <div className="card-body flex flex-row ">
                   <div className="justify-between w-full">
                     <div className="flex  items-center justify-between">
