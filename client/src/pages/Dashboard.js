@@ -9,13 +9,14 @@ export function handleAddModuleButton() {
 
 function Dashboard() {
   const [modules, setModules] = useState([]);
-  // const [topics, setTopics] = useState([]);
   const [newModuleName, setNewModuleName] = useState("");
   const [newModuleDescription, setNewModuleDescription] = useState("");
   const [newTopicName, setNewTopicName] = useState("");
   const [newTopicDescription, setNewTopicDescription] = useState("");
   const [courseName, setCourseName] = useState("");
   const [editTopicName, setEditTopicName] = useState("");
+  const [editTopicId, setEditTopicId] = useState("");
+  const [editModuleId, setEditModuleId] = useState("");
   const [deleteTopicName, setDeleteTopicName] = useState("");
   const [editModuleName, setEditModuleName] = useState("");
   const [deleteModuleName, setDeleteModuleName] = useState("");
@@ -70,22 +71,19 @@ function Dashboard() {
   }
 
   function handleEditTopicButton(moduleId, topicId) {
-    setEditModuleName(moduleId);
-    setEditTopicName(topicId);
+    setEditModuleId(moduleId);
+    setEditTopicId(topicId);
     document.getElementById("edit_topic_modal").showModal();
   }
 
   async function handleEditTopicName() {
     try {
-      const courseId = editModuleName; // Use moduleId as courseId
-      const topicId = editTopicName; // Use editTopicName as topicId
-
       const updatedTopic = {
-        title: newModuleName, // Use newModuleName for the updated title
+        title: editTopicName,
       };
 
       const response = await axios.put(
-        `/topics/${courseId}/${topicId}`,
+        `/topics/${editModuleId}/${editTopicId}`,
         updatedTopic
       );
 
@@ -93,7 +91,6 @@ function Dashboard() {
         console.log("Topic edited successfully");
         document.getElementById("edit_topic_modal").close();
 
-        // Refresh data after editing a topic
         axios.get("/courses").then((response) => {
           setModules(response.data);
         });
@@ -113,7 +110,6 @@ function Dashboard() {
 
   async function handleDeleteTopic() {
     try {
-      // Find the corresponding course object by name
       const courseToDelete = modules.find(
         (module) => module.title === deleteModuleName
       );
@@ -238,121 +234,97 @@ function Dashboard() {
     <>
       <Navbar isLoggedIn={true} isDashboard={true} />
 
-      <div
-        className="dashboard "
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        {modules.length > 0 ? (
-          modules.map((module) => (
-            <div
-              key={module._id}
-              className="card w-1200 bg-base-100 shadow-xl mt-10"
-            >
+      <div className="dashboard  mx-auto p-4  max-w-6xl 2justify-center items-center min-h-screen">
+        <div className="">
+          {modules.length > 0 ? (
+            modules.map((module) => (
               <div
-                className="card-body"
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                }}
+                key={module._id}
+                className="card   bg-neutral text-neutral-contentbg-base-200 shadow-xl mb-6 "
               >
-                <div>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                    }}
-                  >
-                    <div className="flex flex-col">
-                      <h2 className="card-title">{module.title}</h2>
-                      <p>{module.description}</p>
-                    </div>
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        gap: "5px",
-                      }}
-                    >
-                      <button
-                        className="btn"
-                        onClick={() => {
-                          setCourseName(module.title);
-                          handleAddTopicButton();
-                        }}
-                      >
-                        Add Topic
-                      </button>
-                      <button
-                        className="btn"
-                        onClick={() => handleEditModuleButton(module._id)}
-                      >
-                        Edit
-                      </button>
-                      <button
-                        className="btn"
-                        onClick={() => handleDeleteModuleButton(module._id)}
-                      >
-                        Delete
-                      </button>
+                <div className="card-body flex flex-row ">
+                  <div className="justify-between w-full">
+                    <div className="flex  items-center justify-between">
+                      <div className="flex flex-col">
+                        <h3 className="card-title">{module.title}</h3>
+                        <p>{module.description}</p>
+                      </div>
+                      <div className="flex flex-row items-end space-x-2 basis-1/4 ">
+                        <button
+                          className="btn btn-outline btn-primary"
+                          onClick={() => {
+                            setCourseName(module.title);
+                            handleAddTopicButton();
+                          }}
+                        >
+                          Add Topic
+                        </button>
+                        <button
+                          className="btn btn-outline btn-accent"
+                          onClick={() => {
+                            setNewModuleName(module.title);
+                            setNewModuleDescription(module.description);
+                            handleEditModuleButton(module._id);
+                          }}
+                        >
+                          Edit
+                        </button>
+                        <button
+                          className="btn btn-outline btn-secondary"
+                          onClick={() => handleDeleteModuleButton(module._id)}
+                        >
+                          Delete
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <ul className="menu w-1200 bg-base-200  rounded-box">
-                <li>
-                  <h2 className="menu-title">Topics</h2>
-                  <ul>
-                    {module?.topics?.map((topic) => (
-                      <li
-                        key={topic._id}
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          width: "800px",
-                        }}
-                      >
-                        <div style={{ justifyContent: "space-between" }}>
-                          <div>
+                <ul className="menu  bg-base-200  rounded-b-lg">
+                  <li>
+                    <h2 className="menu-title">Topics</h2>
+                    <ul>
+                      {module?.topics?.map((topic) => (
+                        <li key={topic._id}>
+                          <div className="flex justify-between w-full ">
                             <Link to={`/topics/${module._id}/${topic._id}`}>
                               {topic.title}
                             </Link>
-                          </div>
-                          <div style={{ display: "flex", gap: "5px" }}>
-                            <button
-                              className="btn"
-                              onClick={() =>
-                                handleEditTopicButton(module._id, topic._id)
-                              }
-                            >
-                              Edit
-                            </button>
 
-                            <button
-                              className="btn"
-                              onClick={() =>
-                                handleDeleteTopicButton(module.title, topic._id)
-                              }
-                            >
-                              Delete
-                            </button>
+                            <div className="flex space-x-2 ">
+                              <button
+                                className="btn btn-outline btn-accent"
+                                onClick={() => {
+                                  setEditTopicName(topic.title);
+                                  handleEditTopicButton(module._id, topic._id);
+                                }}
+                              >
+                                Edit
+                              </button>
+
+                              <button
+                                className="btn btn-outline btn-secondary"
+                                onClick={() =>
+                                  handleDeleteTopicButton(
+                                    module.title,
+                                    topic._id
+                                  )
+                                }
+                              >
+                                Delete
+                              </button>
+                            </div>
                           </div>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                </li>
-              </ul>
-            </div>
-          ))
-        ) : (
-          <p>No modules available.</p>
-        )}
+                        </li>
+                      ))}
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            ))
+          ) : (
+            <p>No modules available.</p>
+          )}
+        </div>
       </div>
 
       {/* Add Module Modal */}
@@ -457,7 +429,7 @@ function Dashboard() {
             className="input input-bordered w-full mb-2"
             type="text"
             placeholder="Topic Name"
-            value={editTopicName.title}
+            value={editTopicName}
             onChange={(e) => setEditTopicName(e.target.value)}
           />
           <div className="modal-action">

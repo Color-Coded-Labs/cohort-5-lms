@@ -12,7 +12,6 @@ function Welcome() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordMatchError, setPasswordMatchError] = useState("");
-  const [error, setError] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -37,29 +36,25 @@ function Welcome() {
   const handleSignup = async () => {
     if (password !== confirmPassword) {
       setPasswordMatchError("Passwords do not match");
-      return; // Exit the function early if passwords don't match
+      return;
     }
 
-    // Check username availability
     try {
       const availabilityResponse = await axios.get(
         `/users/check-username/${username}`
       );
 
       if (!availabilityResponse.data.available) {
-        // Username is not available
         setIsUsernameAvailable(false);
         setUsernameAvailabilityError("Username is already in use");
-        return; // Exit the function
+        return;
       }
     } catch (error) {
       console.error("Error checking username availability:", error);
-      // Handle error, e.g., show a generic error message
     }
 
-    // If passwords match and username is available, clear the error
     setPasswordMatchError("");
-    setUsernameAvailabilityError(""); // Clear the error message
+    setUsernameAvailabilityError("");
 
     try {
       const response = await axios.post("/users/register", {
@@ -69,7 +64,6 @@ function Welcome() {
       });
 
       if (response.status === 200) {
-        // Signup was successful, switch to login mode and display success message
         setIsSignup(false);
         setUsername("");
         setPassword("");
@@ -78,7 +72,7 @@ function Welcome() {
       }
     } catch (error) {
       console.log(error);
-      setError("Failed to sign up. Please try again.");
+      openModal("Failed to sign up. Please try again.");
     }
   };
 
@@ -90,12 +84,11 @@ function Welcome() {
       });
 
       if (response.status === 200) {
-        // Redirect to the dashboard page or display a success message
         navigate("/dashboard");
       }
     } catch (error) {
       console.log(error);
-      openModal("Invalid username or password."); // Open the error modal
+      openModal("Invalid username or password.");
     }
   };
 
@@ -107,14 +100,12 @@ function Welcome() {
     }
   };
 
-  // Add this inside your component, e.g., inside the useEffect hook
   useEffect(() => {
     if (showSuccessModal) {
       const timer = setTimeout(() => {
         setShowSuccessModal(false);
-      }, 5000); // Hide the modal after 5 seconds (adjust the delay as needed)
+      }, 5000);
 
-      // Clean up the timer when the component unmounts
       return () => clearTimeout(timer);
     }
   }, [showSuccessModal]);
