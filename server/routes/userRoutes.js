@@ -76,6 +76,53 @@ router.post("/register", async (req, res) => {
 
 /**
  * @swagger
+ * /users/check-username/{username}:
+ *   get:
+ *     summary: Check if a username is available
+ *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: username
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The username to check for availability.
+ *     responses:
+ *       200:
+ *         description: Username is available
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 available:
+ *                   type: boolean
+ *                   description: Indicates if the username is available.
+ *       500:
+ *         description: Internal server error
+ */
+
+// Route to check if a username is available
+router.get("/check-username/:username", async (req, res) => {
+  try {
+    const { username } = req.params;
+
+    // Check if the username already exists
+    const existingUser = await User.findOne({ username });
+
+    if (existingUser) {
+      res.status(200).json({ available: false }); // Username is not available
+    } else {
+      res.status(200).json({ available: true }); // Username is available
+    }
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+/**
+ * @swagger
  * /users/login:
  *   post:
  *     summary: Login as an existing user
@@ -122,19 +169,20 @@ router.post("/login", async (req, res) => {
     // Check if user exists
     const user = await User.findOne({ username });
     if (!user) {
-      res.status(400).json({ message: "Invalid username or password" });
+      return res.status(400).json({ message: "Invalid username or password" });
     }
 
     // Compare password
     const validPassword = await bcrypt.compare(password, user.password);
     if (!validPassword) {
-      res.status(400).json({ message: "Invalid username or password" });
+      return res.status(400).json({ message: "Invalid username or password" });
     }
-    res
+
+    return res
       .status(200)
       .json({ message: "Logged in successfully", userId: user._id });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message });
   }
 });
 

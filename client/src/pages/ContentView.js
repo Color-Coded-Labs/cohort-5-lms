@@ -5,18 +5,23 @@ import Navbar from "../components/Navbar";
 import ReactMarkdown from "react-markdown";
 
 function ContentView() {
-  const { topicId } = useParams();
-  const [topic, setTopic] = useState({ title: "", content: "" });
+  const { courseId, topicId } = useParams();
+  const [topic, setTopic] = useState({
+    title: "",
+    description: "",
+    content: "",
+  });
   const [editMode, setEditMode] = useState(false);
   const [editedContent, setEditedContent] = useState("");
+  const [editedDescription, setEditedDescription] = useState("");
 
   useEffect(() => {
-    // Fetch the topic's details based on topicId
     async function fetchTopicDetails() {
       try {
         const response = await axios.get(`/topics/${topicId}`);
         setTopic(response.data);
         setEditedContent(response.data.content);
+        setEditedDescription(response.data.description);
         console.log(response.data);
       } catch (error) {
         console.error("Error fetching topic details:", error);
@@ -32,17 +37,22 @@ function ContentView() {
 
   const handleCancelEdit = () => {
     setEditMode(false);
-    // Reset edited content to the original content
     setEditedContent(topic.content);
+    setEditedDescription(topic.description);
   };
 
   const handleSaveEdit = async () => {
     try {
-      // Send the updated content to the server
-      await axios.put(`/topics/${topicId}`, { content: editedContent });
+      await axios.put(`/topics/${courseId}/${topicId}`, {
+        content: editedContent,
+        description: editedDescription,
+      });
       setEditMode(false);
-      // Update the topic's content
-      setTopic((prevTopic) => ({ ...prevTopic, content: editedContent }));
+      setTopic((prevTopic) => ({
+        ...prevTopic,
+        content: editedContent,
+        description: editedDescription,
+      }));
     } catch (error) {
       console.error("Error saving edited content:", error);
     }
@@ -53,36 +63,40 @@ function ContentView() {
       <Navbar isLoggedIn={true} isDashboard={false} />
       <div className="container mx-auto p-4">
         <h1 className="text-2xl font-semibold">{topic.title}</h1>
-        <div className="mb-4 flex justify-between items-center"></div>
-        <div className="mt-4">
-          {editMode ? (
+
+        {editMode ? (
+          <>
+            <input
+              className="w-full border rounded p-2"
+              type="text"
+              placeholder="Edit Description"
+              value={editedDescription}
+              onChange={(e) => setEditedDescription(e.target.value)}
+            />
             <textarea
-              className="w-full h-48 border rounded p-2"
+              className="w-full h-96 flex-grow border rounded p-2 mt-4"
+              placeholder="Edit Content"
               value={editedContent}
               onChange={(e) => setEditedContent(e.target.value)}
             />
-          ) : (
-            <ReactMarkdown className="prose max-w-none w-full h-48 p-2">
+            <button className="btn btn-primary" onClick={handleSaveEdit}>
+              Save
+            </button>
+            <button className="btn btn-secondary" onClick={handleCancelEdit}>
+              Cancel
+            </button>
+          </>
+        ) : (
+          <>
+            <p className="text-gray-500 mt-4">{topic.description}</p>
+            <ReactMarkdown className="prose max-w-none w-full flex-grow p-2">
               {topic.content}
             </ReactMarkdown>
-          )}
-        </div>
-        <div className="space-x-2">
-          {editMode ? (
-            <>
-              <button className="btn btn-primary" onClick={handleSaveEdit}>
-                Save
-              </button>
-              <button className="btn btn-secondary" onClick={handleCancelEdit}>
-                Cancel
-              </button>
-            </>
-          ) : (
             <button className="btn btn-primary" onClick={handleEditClick}>
               Edit
             </button>
-          )}
-        </div>
+          </>
+        )}
       </div>
     </>
   );

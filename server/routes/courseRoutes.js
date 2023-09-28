@@ -52,15 +52,14 @@ router.post("/create", async (req, res) => {
     const newCourse = {
       title: req.body.title,
       description: req.body.description,
+      topics: [],
     };
 
     const course = await Course.create(newCourse);
     res.status(200).send(course);
   } catch (error) {
-
     console.log(error.message);
     res.status(500).send(error.message);
-
   }
 });
 
@@ -185,7 +184,7 @@ router.get("/", async (req, res) => {
 router.put("/:courseId", async (req, res) => {
   // TODO: Implement module update logic
   try {
-    if (!req.body.title || !req.body.description || !req.body.topics) {
+    if (!req.body.title || !req.body.description) {
       res.status(400).send({
         message: "Please include a title, description, and topics",
       });

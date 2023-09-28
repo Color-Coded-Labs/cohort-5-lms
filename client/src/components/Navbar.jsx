@@ -1,77 +1,18 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import axios from "axios";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { handleAddModuleButton } from "../pages/Dashboard";
 
-const Navbar = ({ isLoggedIn, onLogout, isDashboard }) => {
-  const [newModuleName, setNewModuleName] = useState("");
-  const [newModuleDescription, setNewModuleDescription] = useState("");
-  const [existingCourseTitles, setExistingCourseTitles] = useState([]);
-  const [userLoggedIn, setUserLoggedIn] = useState();
+const Navbar = ({ isLoggedIn, isDashboard }) => {
+  const [userLoggedIn, setUserLoggedIn] = useState(true);
   const navigate = useNavigate();
-  const location = useLocation();
-
-  useEffect(() => {
-    fetchExistingCourseTitles();
-  }, []);
-
-  const fetchExistingCourseTitles = async () => {
-    try {
-      const response = await axios.get("/courses");
-      const titles = response.data.map((course) => course.title);
-      setExistingCourseTitles(titles);
-    } catch (error) {
-      console.error("Error fetching course titles:", error);
-    }
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    if (name === "moduleName") {
-      setNewModuleName(value);
-    } else if (name === "moduleDescription") {
-      setNewModuleDescription(value);
-    }
-  };
-
-  const handleAddModuleButton = () => {
-    document.getElementById("add_module_modal").showModal();
-  };
-
-  const handleAddModule = async () => {
-    try {
-      if (existingCourseTitles.includes(newModuleName)) {
-        alert("A course with this title already exists.");
-        return;
-      }
-
-      const newCourse = {
-        title: newModuleName,
-        description: newModuleDescription,
-        topics: [],
-      };
-
-      const createResponse = await axios.post("/courses/create", newCourse);
-
-      if (createResponse.data) {
-        setNewModuleName("");
-        setNewModuleDescription("");
-        document.getElementById("add_module_modal").close();
-        fetchExistingCourseTitles();
-      }
-    } catch (error) {
-      if (error.response) {
-        console.error("Server Error:", error.response.data);
-      } else {
-        console.error("Error adding module:", error.message);
-      }
-    }
-  };
 
   const handleLogout = () => {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
-    setUserLoggedIn(false);
-    navigate("/"); // Redirect to the home page
+    if (userLoggedIn) {
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+      setUserLoggedIn(false);
+      navigate("/");
+    }
   };
 
   return (
@@ -95,7 +36,9 @@ const Navbar = ({ isLoggedIn, onLogout, isDashboard }) => {
             </svg>
           </label>
         </div>
-        <a className="btn btn-ghost normal-case text-xl">Color Coded Labs</a>
+        <Link className="btn btn-ghost normal-case text-xl">
+          Color Coded Labs
+        </Link>
       </div>
       <div className="navbar-center hidden lg:flex"></div>
       <div className="navbar-end">
@@ -117,43 +60,6 @@ const Navbar = ({ isLoggedIn, onLogout, isDashboard }) => {
           </button>
         ) : null}
       </div>
-
-      {/* Add Module Modal */}
-      <dialog id="add_module_modal" className="modal">
-        <div className="modal-box">
-          <h3 className="font-bold text-lg mb-4">Add New Module</h3>
-          <input
-            className="input input-bordered w-full mb-4"
-            type="text"
-            name="moduleName"
-            placeholder="Module Name"
-            value={newModuleName}
-            onChange={handleInputChange}
-          />
-          <input
-            className="input input-bordered w-full mb-2"
-            type="text"
-            name="moduleDescription"
-            placeholder="Module Description"
-            value={newModuleDescription}
-            onChange={handleInputChange}
-          />
-
-          <div className="modal-action">
-            <button className="btn" onClick={handleAddModule}>
-              Add
-            </button>
-            <button
-              className="btn btn-secondary"
-              onClick={() => {
-                document.getElementById("add_module_modal").close();
-              }}
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
-      </dialog>
     </div>
   );
 };

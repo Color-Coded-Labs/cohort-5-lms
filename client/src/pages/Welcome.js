@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Modal from "react-modal";
 
@@ -78,7 +78,7 @@ function Welcome() {
       }
     } catch (error) {
       console.log(error);
-      setError("Failed to sign up. Please try again."); // Display an appropriate error message
+      setError("Failed to sign up. Please try again.");
     }
   };
 

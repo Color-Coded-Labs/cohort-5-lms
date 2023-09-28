@@ -220,8 +220,17 @@ router.put("/:courseId/:topicId", async (req, res) => {
     }
 
     // Update the topic properties
-    topic.title = req.body.title;
-    topic.description = req.body.description;
+    if (req.body.title) {
+      topic.title = req.body.title;
+    }
+
+    if (req.body.description) {
+      topic.description = req.body.description;
+    }
+
+    if (req.body.content) {
+      topic.content = req.body.content;
+    }
 
     await course.save();
 
